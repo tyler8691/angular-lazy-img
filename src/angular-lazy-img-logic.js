@@ -39,7 +39,6 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
           i--;
         }
       }
-      if(images.length === 0){ stopListening(); }
     }
 
     checkImagesT = lazyImgHelpers.throttle(checkImages, 30);
