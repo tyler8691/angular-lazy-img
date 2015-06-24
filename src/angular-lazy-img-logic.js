@@ -39,6 +39,7 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
           i--;
         }
       }
+      if(images.length === 0){ stopListening(); }
     }
 
     checkImagesT = lazyImgHelpers.throttle(checkImages, 30);
@@ -56,6 +57,11 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
         checkImages();
         listen('on');
       }, 1);
+    }
+
+    function stopListening(){
+      isListening = false;
+      listen('off');
     }
 
     function removeImage(image){
@@ -104,6 +110,7 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
 
     Photo.prototype.removeImage = function(){
       removeImage(this);
+      if(images.length === 0){ stopListening(); }
     };
 
     return Photo;
