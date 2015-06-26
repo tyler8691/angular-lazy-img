@@ -116,6 +116,7 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
 
   }
 ]);
+
 angular.module('angularLazyImg').provider('lazyImgConfig', function() {
   'use strict';
 
@@ -155,8 +156,8 @@ angular.module('angularLazyImg').factory('lazyImgHelpers', [
       var rect = elem.getBoundingClientRect();
       var bottomline = winDimensions.height + offset;
       return (
-       rect.left >= 0 && rect.right <= winDimensions.width + offset && (
-         rect.top >= 0 && rect.top <= bottomline ||
+       rect.left >= -rect.width && rect.right <= winDimensions.width + offset && (
+         rect.top >= -rect.height && rect.top <= bottomline ||
          rect.bottom <= bottomline && rect.bottom >= 0 - offset
         )
       );
