@@ -72,7 +72,17 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
 
     function loadImage(photo){
       var img = new Image();
+
+      if(options.errorClass){
+        photo.$elem.removeClass(options.errorClass);
+      }
+
+      if(options.successClass){
+        photo.$elem.removeClass(options.successClass);
+      }
+
       img.onerror = function(){
+        setPhotoSrc(photo.$elem, null);
         if(options.errorClass){
           photo.$elem.addClass(options.errorClass);
         }
@@ -90,7 +100,11 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
 
     function setPhotoSrc($elem, src){
       if ($elem[0].nodeName.toLowerCase() === 'img') {
-        $elem[0].src = src;
+        if (src) {
+          $elem[0].src = src;
+        } else {
+          $elem.removeAttr('src');
+        }
       } else {
         $elem.css('background-image', 'url("' + src + '")');
       }
