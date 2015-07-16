@@ -118,8 +118,7 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
       this.$elem = $elem;
       this.cachedRect = {
         clientRect : null,
-        scrollY : null,
-        scrollX : null
+        winDimensions : null
       }
     }
 
@@ -132,6 +131,15 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
     Photo.prototype.removeImage = function(){
       removeImage(this);
       if(images.length === 0){ stopListening(); }
+    };
+
+    Photo.prototype.cachedRectNeedsUpdate = function(winDimensions) {
+      return !this.cachedRect.clientRect ||
+        !this.cachedRect.winDimensions ||
+        this.cachedRect.winDimensions.scrollX != winDimensions.scrollX ||
+        this.cachedRect.winDimensions.scrollY != winDimensions.scrollY ||
+        this.cachedRect.winDimensions.width != winDimensions.width ||
+        this.cachedRect.winDimensions.height != winDimensions.height;
     };
 
     return Photo;
