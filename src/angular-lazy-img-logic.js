@@ -31,9 +31,12 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
     }, 60);
 
     function checkImages(){
+      winDimensions.scrollY = $window.scrollY;
+      winDimensions.scrollX = $window.scrollX;
+
       for(var i = 0, l = images.length; i < l; i++){
         var image = images[i];
-        if(image && lazyImgHelpers.isElementInView(image.$elem[0], options.offset, winDimensions)){
+        if(image && lazyImgHelpers.isImageInView(image, options.offset, winDimensions)){
           loadImage(image);
           removeImage(image);
           i--;
@@ -113,6 +116,11 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
     // PHOTO
     function Photo($elem){
       this.$elem = $elem;
+      this.cachedRect = {
+        clientRect : null,
+        scrollY : null,
+        scrollX : null
+      }
     }
 
     Photo.prototype.setSource = function(source){

@@ -9,15 +9,23 @@ angular.module('angularLazyImg').factory('lazyImgHelpers', [
       };
     }
 
-    function isElementInView(elem, offset, winDimensions) {
-      var rect = elem.getBoundingClientRect();
+    function isImageInView(image, offset, winDimensions) {
+      var rect = image.cachedRect.clientRect;
+      if (!rect || image.cachedRect.scrollY != winDimensions.scrollY || image.cachedRect.scrollX != winDimensions.scrollX) {
+        var elem = image.$elem[0];
+        rect = elem.getBoundingClientRect();
+
+        image.cachedRect.clientRect = rect;
+        image.cachedRect.scrollY = scrollY;
+        image.cachedRect.scrollX = scrollX;
+      }
+
       var bottomline = winDimensions.height + offset;
       return (
        rect.left >= -rect.width && rect.right <= winDimensions.width + offset && (
          rect.top >= -rect.height && rect.top <= bottomline ||
          rect.bottom <= bottomline && rect.bottom >= 0 - offset
-        )
-      );
+        ));
     }
 
     // http://remysharp.com/2010/07/21/throttling-function-calls/
@@ -41,7 +49,7 @@ angular.module('angularLazyImg').factory('lazyImgHelpers', [
     }
 
     return {
-      isElementInView: isElementInView,
+      isImageInView: isImageInView,
       getWinDimensions: getWinDimensions,
       throttle: throttle
     };
