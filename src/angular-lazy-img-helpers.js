@@ -15,8 +15,8 @@ angular.module('angularLazyImg').factory('lazyImgHelpers', [
         var elem = image.$elem[0];
         rect = elem.getBoundingClientRect();
 
-        image.cachedRect.clientRect = rect;
-        image.cachedRect.winDimensions = winDimensions;
+        image.cachedRect.clientRect = JSON.parse(JSON.stringify(rect));
+        image.cachedRect.winDimensions = JSON.parse(JSON.stringify(winDimensions));
       }
 
       var bottomline = winDimensions.height + offset;
