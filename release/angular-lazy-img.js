@@ -76,14 +76,6 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
     function loadImage(photo){
       var img = new Image();
 
-      if(options.errorClass){
-        photo.$elem.removeClass(options.errorClass);
-      }
-
-      if(options.successClass){
-        photo.$elem.removeClass(options.successClass);
-      }
-
       img.onerror = function(){
         setPhotoSrc(photo.$elem, null);
         if(options.errorClass){
@@ -128,8 +120,19 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
 
     Photo.prototype.setSource = function(source){
       this.src = source;
+
+      // Clear data
       this.clearCachedRect();
+      if(options.errorClass){
+        this.$elem.removeClass(options.errorClass);
+      }
+      if(options.successClass){
+        this.$elem.removeClass(options.successClass);
+      }
+      setPhotoSrc(this.$elem, null);
+
       images.push(this);
+      
       if (!isListening){ 
         startListening(); 
       } else if (lazyImgHelpers.isImageInView(this, options.offset, winDimensions)) {
