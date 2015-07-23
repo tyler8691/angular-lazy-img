@@ -135,9 +135,8 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
       
       if (!isListening){ 
         startListening(); 
-      } else if (lazyImgHelpers.isImageInView(this, options.offset, winDimensions)) {
-          loadImage(this);
-          removeImage(this);
+      } else {
+        setTimeout(checkImagesT, 0);
       }
     };
 
