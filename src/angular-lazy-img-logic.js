@@ -28,7 +28,7 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
     winDimensions = lazyImgHelpers.getWinDimensions();
     saveWinOffsetT = lazyImgHelpers.throttle(function(){
       winDimensions = lazyImgHelpers.getWinDimensions();
-    }, 60);
+    }, 80);
 
     function checkImages(){
       winDimensions.scrollY = $window.scrollY;
@@ -44,7 +44,7 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
       }
     }
 
-    checkImagesT = lazyImgHelpers.throttle(checkImages, 30);
+    checkImagesT = lazyImgHelpers.throttle(checkImages, 50);
 
     function listen(param){
       (options.container || $win)[param]('scroll', checkImagesT);
@@ -116,20 +116,31 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
     // PHOTO
     function Photo($elem){
       this.$elem = $elem;
+      this.clearCachedRect();
+    }
+
+    Photo.prototype.clearCachedRect = function() {
       this.cachedRect = {
         clientRect : null,
         winDimensions : null
-      }
+      };
     }
 
     Photo.prototype.setSource = function(source){
       this.src = source;
+      this.clearCachedRect();
       images.push(this);
-      if (!isListening){ startListening(); }
+      if (!isListening){ 
+        startListening(); 
+      } else if (lazyImgHelpers.isImageInView(this, options.offset, winDimensions)) {
+          loadImage(this);
+          removeImage(this);
+      }
     };
 
     Photo.prototype.removeImage = function(){
       removeImage(this);
+      this.clearCachedRect();
       if(images.length === 0){ stopListening(); }
     };
 
