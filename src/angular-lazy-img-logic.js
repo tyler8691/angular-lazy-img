@@ -14,7 +14,7 @@
 angular.module('angularLazyImg', []);
 
 angular.module('angularLazyImg').factory('LazyImgMagic', [
-  '$window', 'lazyImgConfig', 'lazyImgHelpers',
+  '$window', 'lazyImgConfig', 'lazyImgHelpers', '$rootScope',
   function($window, lazyImgConfig, lazyImgHelpers){
     'use strict';
 
@@ -82,6 +82,7 @@ angular.module('angularLazyImg').factory('LazyImgMagic', [
           photo.$elem.addClass(options.errorClass);
         }
         options.onError(photo);
+        $rootScope.$broadcast('angularLazyImgLoadError', photo);
       };
       img.onload = function(){
         setPhotoSrc(photo.$elem, photo.src);
