@@ -15,7 +15,7 @@ angular.module('angularLazyImg', []);
 
 angular.module('angularLazyImg').factory('LazyImgMagic', [
   '$window', 'lazyImgConfig', 'lazyImgHelpers', '$rootScope',
-  function($window, lazyImgConfig, lazyImgHelpers){
+  function($window, lazyImgConfig, lazyImgHelpers, $rootScope){
     'use strict';
 
     var winDimensions, $win, images, isListening, options;
